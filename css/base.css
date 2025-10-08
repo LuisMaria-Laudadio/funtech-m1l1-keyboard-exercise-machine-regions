@@ -30,6 +30,11 @@ body {
   font-family: Inter, system-ui, Arial, sans-serif;
   color: var(--text);
   background: transparent !important;  /* 💥 делает фон прозрачным */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 10px;
+  overflow-x: hidden;
 }
 
 .scene {

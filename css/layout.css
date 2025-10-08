@@ -59,3 +59,88 @@
     text-align: left;
   }
 }
+
+/* === Адаптация для экранов и iframe === */
+@media (max-width: 1200px) {
+  .work-area {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .side-panel {
+    margin-top: 20px;
+    width: 90%;
+    max-width: 420px;
+  }
+}
+
+@media (max-width: 960px) {
+  .monitor {
+    flex: 1 1 auto;
+    max-width: 90%;
+  }
+
+  .screen {
+    height: 320px;
+  }
+
+  .screen-text, .ghost-word {
+    font-size: 3.5rem;
+  }
+
+  .slot {
+    width: 56px;
+    height: 56px;
+  }
+
+  .cat-sprite {
+    height: 80px;
+  }
+}
+
+@media (max-width: 760px) {
+  main.scene {
+    transform: scale(0.9);
+    transform-origin: top center;
+  }
+
+  .monitor {
+    max-width: 95%;
+  }
+
+  .side-panel {
+    width: 95%;
+  }
+
+  .hint, .controls {
+    font-size: 0.95rem;
+  }
+
+  #okBtn {
+    font-size: 20px;
+    padding: 14px 24px;
+  }
+}
+
+@media (max-width: 580px) {
+  main.scene {
+    transform: scale(0.8);
+  }
+
+  .screen {
+    height: 280px;
+  }
+
+  .screen-text, .ghost-word {
+    font-size: 2.8rem;
+  }
+
+  .cat-sprite {
+    height: 70px;
+  }
+
+  .slot {
+    width: 48px;
+    height: 48px;
+  }
+}
