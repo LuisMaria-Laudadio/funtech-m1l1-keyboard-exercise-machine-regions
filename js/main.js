@@ -275,3 +275,21 @@ function updateGhostWord() {
 
   ghostWord.innerHTML = out;
 }
+
+window.addEventListener("resize", scaleScene);
+window.addEventListener("DOMContentLoaded", scaleScene);
+
+function scaleScene() {
+  const scene = document.querySelector(".scene");
+  if (!scene) return;
+
+  const baseWidth = 1280;
+  const baseHeight = 800;
+  const scale = Math.min(
+    window.innerWidth / baseWidth,
+    window.innerHeight / baseHeight
+  );
+
+  const offsetY = (window.innerHeight - baseHeight * scale) / 2;
+  scene.style.transform = `translateY(${offsetY}px) scale(${scale})`;
+}
