@@ -1,0 +1,37 @@
+:root {
+  --bg: #7e7a93;
+  --bezel: #2b2f3a;
+  --screen: #e8f6ff;
+  --screen-border: #a7c7ff;
+
+  --key: #ffffff;
+  --key-top: #fff7d6;
+  --key-edge: #cfd7ff;
+  --key-press: #f0e8ff;
+
+  --violet: #7b5cff;
+  --violet-dark: #5234d4;
+
+  --text: #1b1b1b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: Inter, system-ui, Arial, sans-serif;
+  color: var(--text);
+  background: transparent !important;  /* 💥 делает фон прозрачным */
+}
+
+.scene {
+  background: transparent !important;  /* чтобы фон сцены тоже не перекрывал */
+}

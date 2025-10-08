@@ -1,0 +1,229 @@
+.monitor {
+  flex: 1 1 620px;
+  max-width: 680px;
+  position: relative;
+  z-index: 3;
+}
+
+.monitor-bezel {
+  background: linear-gradient(180deg, #3a4150, var(--bezel));
+  border-radius: 28px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+  padding: 16px;
+}
+
+.screen {
+  position: relative;
+  height: 380px;
+  background: linear-gradient(180deg, #def3ff, var(--screen));
+  border-radius: 20px;
+  border: 6px solid var(--screen-border);
+  overflow: hidden;
+}
+
+/* Текст на экране */
+.screen-text, .ghost-word {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.screen-text {
+  color: #0b2a6e;
+  z-index: 4;
+  transition: color 0.25s, opacity 0.25s;
+}
+
+.screen-text.wrong {
+  color: #ff4d4d;
+  text-shadow: 0 0 10px rgba(255,0,0,0.7);
+  animation: shake 0.3s ease-in-out;
+}
+
+.ghost-word {
+  z-index: 3;
+  color: rgba(0,0,0,0.15);
+  display: flex;
+  gap: 0.1em;
+}
+
+.ghost-word span {
+  display: inline-block;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.ghost-word.wrong span {
+  color: #ff4d4d !important;
+  animation: shakeWord 0.3s ease-in-out;
+}
+
+/* Подставка */
+.monitor::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -22px;
+  width: 180px;
+  height: 34px;
+  background: linear-gradient(180deg, #414655 0%, #2b2f3a 100%);
+  border-radius: 0 0 18px 18px;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.18),
+              0 6px 12px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+}
+
+/* Эмодзи */
+.emoji-cloud {
+  position: absolute;
+  right: 14px;
+  bottom: 8px;
+  font-size: 22px;
+  opacity: 0.75;
+}
+
+/* Слоты */
+.slot-bar {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 5;
+}
+
+.slot {
+  width: 64px;
+  height: 64px;
+  border: 3px dashed rgba(123, 92, 255, 0.45);
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 12px;
+  box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.08);
+}
+
+.slot.filled {
+  border-style: solid;
+  border-color: var(--violet);
+  background: #fff;
+}
+
+/* Кот */
+.cat-sprite {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  height: 100px;
+  width: auto;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.25));
+  transition: transform 0.18s ease, bottom 0.25s ease, left 0.18s ease;
+}
+
+/* Кот в слоте */
+.slot.filled img {
+  width: 90%;
+  display: block;
+  margin: 0 auto;
+}
+
+/* --- Финальное окно --- */
+.screen-modal {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0);
+  z-index: 50;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  opacity: 1;
+  visibility: visible;
+}
+
+.screen-modal.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.screen-modal-card {
+  background: #fff;
+  border: 3px solid var(--violet);
+  border-radius: 18px;
+  padding: 16px 24px;
+  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  max-width: 80%;
+  transform: scale(1);
+  transition: transform 0.3s ease;
+}
+
+.screen-modal:not(.hidden) .screen-modal-card {
+  animation: popup 0.25s ease;
+}
+
+@keyframes popup {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.screen-modal-title {
+  font-weight: 900;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+/* Эффект салюта */
+.firework {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, #fff, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: explode 0.9s ease-out forwards;
+}
+
+@keyframes explode {
+  0% { transform: scale(0.4) translate(0, 0); opacity: 1; }
+  80% { transform: scale(1.2) translate(var(--x), var(--y)); opacity: 1; }
+  100% { transform: scale(0.6) translate(var(--x), var(--y)); opacity: 0; }
+}
+
+/* Анимации */
+@keyframes shakeWord {
+  0%,100%{transform:translateY(0)}
+  25%{transform:translateY(-6px)}
+  50%{transform:translateY(3px)}
+  75%{transform:translateY(-3px)}
+}
+
+@keyframes shake {
+  0%,100%{transform:translate(-50%,-50%)}
+  25%{transform:translate(-52%,-48%)}
+  50%{transform:translate(-48%,-52%)}
+  75%{transform:translate(-51%,-49%)}
+}
+
+.hidden { display: none; }
+
+
+/* Гифка победы */
+.win-gif {
+  width: 160px;
+  height: auto;
+  display: block;
+  margin: 0 auto 12px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  animation: floatUp 2.2s ease-in-out infinite;
+}
+
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}

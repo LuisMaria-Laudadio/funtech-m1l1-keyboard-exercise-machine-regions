@@ -1,0 +1,61 @@
+.scene {
+  width: min(1200px, 96vw);
+  margin: 20px auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+}
+
+/* Стол-планка */
+.desk {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) rotateX(15deg);
+  bottom: 0;
+  width: 120%;
+  height: 46vh; /* занимает почти половину экрана (до середины монитора) */
+  border-radius: 70px 70px 0 0;
+  background: linear-gradient(180deg, #ffe8a8 0%, #ffcf6e 45%, #d48f2e 100%);
+  box-shadow:
+    inset 0 20px 25px rgba(255, 255, 255, 0.35),
+    0 -10px 30px rgba(0, 0, 0, 0.2),
+    0 -20px 60px rgba(0, 0, 0, 0.3);
+  z-index: 0;
+  transform-origin: bottom center;
+}
+
+
+
+/* Основная область — монитор + панель справа */
+.work-area {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: nowrap;
+  z-index: 2;
+}
+
+@media (max-width: 900px) {
+  .work-area {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .side-panel {
+    width: 100%;
+    max-width: min(720px, 94vw);
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hint {
+    width: 100%;
+    text-align: left;
+  }
+}
