@@ -58,28 +58,38 @@ function init(){
 }
 
 /* === Тексты и кнопки === */
-function updateTexts(){
-  // подсказка под текущее состояние
-  const key =
-    stage===STAGES.TASK1 ? 'task1' :
-    stage===STAGES.TASK2 ? 'task2' :
-    stage===STAGES.TASK3 ? 'task3' : 'end';
+function updateTexts() {
+  const t = TEXTS[currentLang];
 
-  hintBody.innerHTML = TEXTS[currentLang][key];
-  document.getElementById('hintTitle').textContent = TEXTS[currentLang].hintTitle;
+  // Заголовок подсказки
+  document.querySelector('.hint-title').textContent = t.hintTitle;
 
-  // бейдж шага
+  // Текст задания с подстановкой слова кота
+  const taskText = t[
+    stage === STAGES.TASK1 ? 'task1' :
+    stage === STAGES.TASK2 ? 'task2' :
+    stage === STAGES.TASK3 ? 'task3' :
+    'finishHint'
+  ].replace('{CAT}', t.catName);
+
+  hintBody.innerHTML = taskText;
+
+  // Этапы (1/3, 2/3 и т.д.)
   stepBadge.textContent =
-    stage===STAGES.TASK1 ? '1 / 3' :
-    stage===STAGES.TASK2 ? '2 / 3' :
-    stage===STAGES.TASK3 ? '3 / 3' : '✔';
+    stage === STAGES.TASK1 ? '1 / 3' :
+    stage === STAGES.TASK2 ? '2 / 3' :
+    stage === STAGES.TASK3 ? '3 / 3' : '—';
 
-  okBtn.textContent         = TEXTS[currentLang].check;
-  restartBtn.textContent    = TEXTS[currentLang].restart;
-  screenRestart.textContent = TEXTS[currentLang].restart;
-  langBtn.textContent       = currentLang === "ru" ? "🇷🇺 Русская" : "🇬🇧 English";
+  // Кнопки
+  okBtn.textContent = t.check;
+  restartBtn.textContent = t.restart;
+  langBtn.textContent = t.lang;
+  screenModal.querySelector('.screen-modal-title').textContent = t.finishTitle;
+
+  // Обновляем привязанные элементы
+  updateGhostWord();
+  updateScreenWord();
 }
-
 
 /* === Переключение языка только вручную === */
 function toggleLang(){
@@ -115,7 +125,7 @@ function onOk(){
   }
   else if(stage===STAGES.TASK2){
     const w = typed.toUpperCase();
-    const correct = (w==="КОТ" || w==="CAT");
+    const correct = (w === TEXTS[currentLang].targetWord.toUpperCase());
     if(correct){
       stage = STAGES.TASK3;
       typed="";
@@ -280,14 +290,17 @@ function launchFireworks() {
 
 /* === Серое слово === */
 function updateGhostWord() {
-  if(stage !== STAGES.TASK2){ ghostWord.innerHTML = ""; return; }
+  if (stage !== STAGES.TASK2) {
+    ghostWord.innerHTML = "";
+    return;
+  }
 
-  const target = currentLang === "ru" ? ["К","О","Т"] : ["C","A","T"];
+  const target = TEXTS[currentLang].targetWord.toUpperCase().split("");
   const entered = typed.toUpperCase().split("");
 
   const out = target.map((letter, i) => {
     const ch = entered[i];
-    if(!ch) return `<span class="ghost">${letter}</span>`;
+    if (!ch) return `<span class="ghost">${letter}</span>`;
     const ok = ch === letter;
     const color = ok ? "#0b2a6e" : "#ff4d4d";
     return `<span style="color:${color}">${ch}</span>`;
@@ -295,6 +308,7 @@ function updateGhostWord() {
 
   ghostWord.innerHTML = out;
 }
+
 
 window.addEventListener("resize", scaleScene);
 window.addEventListener("DOMContentLoaded", scaleScene);
