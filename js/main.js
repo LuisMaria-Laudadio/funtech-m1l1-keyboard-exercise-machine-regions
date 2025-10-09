@@ -210,6 +210,7 @@ function wrongWordFlash(){
   setTimeout(()=>ghostWord.classList.remove("wrong"), 800);
 }
 
+
 /* === Финальное окно === */
 function finishIfDoneOrShowWindow(){
   if(collected >= MAX_GOAL){

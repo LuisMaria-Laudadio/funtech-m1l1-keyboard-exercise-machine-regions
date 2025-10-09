@@ -261,6 +261,7 @@
   text-shadow: 0 4px 0 var(--screen-border), 0 8px 18px rgba(0, 0, 0, 0.22);
 }
 
+
 /* Мигающая линия под буквой */
 .cursor-line {
   position: absolute;

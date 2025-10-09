@@ -103,6 +103,7 @@ function jumpToSlot() {
   }, 600);
 }
 
+
 function resetCats() {
   initSlots();
 }
