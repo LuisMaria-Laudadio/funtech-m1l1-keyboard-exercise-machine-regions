@@ -127,8 +127,13 @@
 /* Кот в слоте */
 .slot.filled img {
   width: 90%;
+  height: auto;
+  object-fit: contain;
   display: block;
-  margin: 0 auto;
+  margin: 4px auto 0;
+  border-radius: 10px;
+  transform: none;
+  box-shadow: none;
 }
 
 /* --- Финальное окно --- */
@@ -226,4 +231,50 @@
 @keyframes floatUp {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
+}
+
+.cat-sprite {
+  transition: left 0.3s ease, transform 0.25s ease;
+}
+
+/* --- Курсор под буквой (старый компьютер) --- */
+.cursor {
+  position: absolute;
+  bottom: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px; /* ширина под букву */
+  height: 10px;
+  background: #0b2a6e;
+  border-radius: 2px;
+  animation: blink 0.8s steps(1) infinite;
+  box-shadow: 0 0 4px rgba(11, 42, 110, 0.4);
+  z-index: 5;
+}
+
+.letter-block {
+  position: relative;
+  display: inline-block;
+  font-size: 96px;
+  font-weight: 900;
+  color: #0b2a6e;
+  text-shadow: 0 4px 0 var(--screen-border), 0 8px 18px rgba(0, 0, 0, 0.22);
+}
+
+/* Мигающая линия под буквой */
+.cursor-line {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 10px;
+  background: #0b2a6e;
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(11, 42, 110, 0.5);
+  animation: blinkLine 1s steps(1) infinite;
+}
+
+@keyframes blinkLine {
+  50% { opacity: 0.2; }
 }

@@ -59,25 +59,27 @@ function init(){
 
 /* === Тексты и кнопки === */
 function updateTexts(){
-  hintBody.innerHTML = TEXTS[currentLang][
+  // подсказка под текущее состояние
+  const key =
     stage===STAGES.TASK1 ? 'task1' :
     stage===STAGES.TASK2 ? 'task2' :
-    stage===STAGES.TASK3 ? 'task3' : 'end'
-  ];
+    stage===STAGES.TASK3 ? 'task3' : 'end';
 
+  hintBody.innerHTML = TEXTS[currentLang][key];
+  document.getElementById('hintTitle').textContent = TEXTS[currentLang].hintTitle;
+
+  // бейдж шага
   stepBadge.textContent =
     stage===STAGES.TASK1 ? '1 / 3' :
     stage===STAGES.TASK2 ? '2 / 3' :
-    stage===STAGES.TASK3 ? '3 / 3' : '—';
+    stage===STAGES.TASK3 ? '3 / 3' : '✔';
 
-  okBtn.textContent      = TEXTS[currentLang].check;
-  restartBtn.textContent = TEXTS[currentLang].restart;
-  langBtn.textContent    = currentLang === "ru" ? "🇷🇺 Русская" : "🇬🇧 English";
-
-  updateGhostWord();
-  updateScreenWord();
-  okBtn.setAttribute('aria-label', TEXTS[currentLang].check);
+  okBtn.textContent         = TEXTS[currentLang].check;
+  restartBtn.textContent    = TEXTS[currentLang].restart;
+  screenRestart.textContent = TEXTS[currentLang].restart;
+  langBtn.textContent       = currentLang === "ru" ? "🇷🇺 Русская" : "🇬🇧 English";
 }
+
 
 /* === Переключение языка только вручную === */
 function toggleLang(){
@@ -120,6 +122,7 @@ function onOk(){
       updateTexts();
       ghostWord.innerHTML = "";
       updateScreenWord();
+      createSlots();
       spawnActiveCat();
       launchFireworks();
     } else {
@@ -186,15 +189,20 @@ function onKeydown(e){
 }
 
 /* === Отображение текста === */
-function updateScreenWord(){
-  if(stage===STAGES.TASK1){
-    screenText.textContent = typed.toUpperCase();
+function updateScreenWord() {
+  const cursor = '<div class="cursor-line"></div>';
+
+  if (stage === STAGES.TASK1) {
+    const letter = typed.toUpperCase();
+    // буква + линия под ней
+    screenText.innerHTML = letter ? `<span>${letter}</span>${cursor}` : cursor;
     screenText.style.opacity = 1;
   } else {
-    screenText.textContent = "";
+    screenText.innerHTML = "";
     screenText.style.opacity = 0;
   }
 }
+
 
 /* === Ошибка === */
 function wrongWordFlash(){
@@ -206,14 +214,25 @@ function wrongWordFlash(){
 function finishIfDoneOrShowWindow(){
   if(collected >= MAX_GOAL){
     stage = STAGES.END;
+
+    // показать финальный текст в подсказке
+    hintBody.innerHTML = TEXTS[currentLang].end;
+    stepBadge.textContent = '✔';
+
     okBtn.classList.add('hidden');
     restartBtn.classList.remove('hidden');
-    screenModal.querySelector('.screen-modal-title').textContent = TEXTS[currentLang].finishTitle;
+
+    // модалка
+    screenModal.querySelector('.screen-modal-title').textContent =
+      TEXTS[currentLang].finishTitle;
+    screenRestart.textContent = TEXTS[currentLang].restart; // ← текст кнопки в модалке
     screenModal.classList.remove('hidden');
-    updateTexts();
-    launchFireworks();
+
+    updateTexts();       // синхронизация языков
+    launchFireworks();   // салют 🎉
   }
 }
+
 
 /* === Подсказка трясётся === */
 function shakeHint(){

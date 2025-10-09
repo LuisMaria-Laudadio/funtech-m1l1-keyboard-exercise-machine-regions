@@ -1,20 +1,26 @@
 const TEXTS = {
   ru: {
-    check: "✔️ Проверить",   // ← новое
+    task1: `Найди первую букву своего имени и нажми её!<br>Потом нажми <b>Проверить</b> или <b>Enter</b>.`,
+    task2: `Напечатай слово <b>КОТ</b> или <b>CAT</b>.<br>Потом нажми <b>Проверить</b> или <b>Enter</b>.`,
+    task3: `Нажимай <b>Пробел</b> — кот шагает вправо. Собери двух котиков. Потом <b>Проверить</b>.`,
+    end:   `Все задания выполнены! 🎉 Молодец! Нажми <b>Рестарт</b>, чтобы сыграть снова.`,
+
+    hintTitle: "Подсказка",
+    check: "Проверить",
     restart: "Рестарт",
     lang: "🇷🇺 Русская",
-    task1: "Найди первую букву своего имени и нажми её! Потом нажми <b>Проверить</b> или <b>Enter</b>.",
-    task2: "Напечатай слово <b>КОТ</b> или <b>CAT</b>. Потом <b>Проверить</b> или <b>Enter</b>.",
-    task3: "Нажимай <b>Пробел</b> — кот идёт вправо. Собери 5 котов. Для завершения нажми <b>Проверить</b>.",
-    finishTitle: "Ты прошёл все задания, молодец!"
+    finishTitle: "Ты прошёл все задания, молодец!",
   },
   en: {
-    check: "✔️ Check",       // ← новое
+    task1: `Find the first letter of your name and press it!<br>Then press <b>Check</b> or <b>Enter</b>.`,
+    task2: `Type <b>CAT</b> (or <b>КОТ</b>).<br>Then press <b>Check</b> or <b>Enter</b>.`,
+    task3: `Press <b>Space</b> — the cat walks right. Collect two cats. Then press <b>Check</b>.`,
+    end:   `All tasks completed! 🎉 Great job! Press <b>Restart</b> to play again.`,
+
+    hintTitle: "Hint",
+    check: "Check",
     restart: "Restart",
     lang: "🇬🇧 English",
-    task1: "Find the first letter of your name and press it! Then press <b>Check</b> or <b>Enter</b>.",
-    task2: "Type <b>CAT</b> (or <b>КОТ</b>). Then <b>Check</b> or <b>Enter</b>.",
-    task3: "Press <b>Space</b> to move the cat. Collect 5 cats. Then press <b>Check</b>.",
-    finishTitle: "You completed all tasks. Great job!"
+    finishTitle: "You completed all tasks. Great job!",
   }
 };
