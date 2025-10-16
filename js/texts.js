@@ -9,7 +9,7 @@ const TEXTS = {
     check: "Check",
     restart: "Restart",
     finishTitle: "You completed all tasks, great job!",
-    catName: "Cat", // НЕ ПЕРЕВОДИТЬ - ДЛЯ ВСЕХ РЕГИОНОВ СЛОВО CAT - на английском
-    targetWord: "CAT" // НЕ ПЕРЕВОДИТЬ - ДЛЯ ВСЕХ РЕГИОНОВ СЛОВО CAT - на английском
+    catName: "Cat", // DO NOT TRANSLATE - FOR ALL REGIONS WE USE THE WORD 'CAT' - in English!
+    targetWord: "CAT" // DO NOT TRANSLATE - FOR ALL REGIONS WE USE THE WORD 'CAT' - in English!
   },
 };
