@@ -1,49 +1,51 @@
-const STAGES = { TASK1:1, TASK2:2, TASK3:3, END:4 };
+const STAGES = { TASK1: 1, TASK2: 2, TASK3: 3, END: 4 };
 let stage;
 let typed = "";
-let currentLang = "ru";
 
-const screenText   = document.getElementById('screenText');
-const screenFx     = document.getElementById('screenFx');
-const ghostWord    = document.getElementById('ghostWord');
+const screenText = document.getElementById('screenText');
+const screenFx = document.getElementById('screenFx');
+const ghostWord = document.getElementById('ghostWord');
 
-const hintCard     = document.getElementById('hint');
-const hintBody     = document.getElementById('hintBody');
-const stepBadge    = document.getElementById('stepBadge');
+const hintCard = document.getElementById('hint');
+const hintBody = document.getElementById('hintBody');
+const stepBadge = document.getElementById('stepBadge');
 
-const okBtn        = document.getElementById('okBtn');
-const restartBtn   = document.getElementById('restartBtn');
-const langBtn      = document.getElementById('langBtn');
+const okBtn = document.getElementById('okBtn');
+const restartBtn = document.getElementById('restartBtn');
 
-const screenModal  = document.getElementById('screenModal');
-const screenRestart= document.getElementById('screenRestart');
-
-document.addEventListener('DOMContentLoaded', init);
+const screenModal = document.getElementById('screenModal');
+const screenRestart = document.getElementById('screenRestart');
 
 /* === Простые звуки === */
 const AC = new (window.AudioContext || window.webkitAudioContext)();
-function ensureAudio(){ if (AC.state !== 'running') AC.resume(); }
+function ensureAudio() { if (AC.state !== 'running') AC.resume(); }
 window.addEventListener('pointerdown', ensureAudio);
-window.addEventListener('keydown',    ensureAudio);
+window.addEventListener('keydown', ensureAudio);
 
-function beep({freq=880, dur=0.06, type='square', vol=0.08}) {
+function beep({ freq = 880, dur = 0.06, type = 'square', vol = 0.08 }) {
   ensureAudio();
   const o = AC.createOscillator();
   const g = AC.createGain();
-  o.type = type; o.frequency.value = freq; g.gain.value = vol;
-  o.connect(g); g.connect(AC.destination);
-  o.start(); o.stop(AC.currentTime + dur);
+  o.type = type;
+  o.frequency.value = freq;
+  g.gain.value = vol;
+  o.connect(g);
+  g.connect(AC.destination);
+  o.start();
+  o.stop(AC.currentTime + dur);
 }
-function tickSound(){ beep({freq:1100, dur:0.035, type:'square', vol:0.06}); }
-function wrongSound(){beep({freq:220, dur:0.20, type:'sawtooth', vol:0.10}); }
+function tickSound() { beep({ freq: 1100, dur: 0.035, type: 'square', vol: 0.06 }); }
+function wrongSound() { beep({ freq: 220, dur: 0.20, type: 'sawtooth', vol: 0.10 }); }
 
 /* === Инициализация === */
-function init(){
+document.addEventListener('DOMContentLoaded', init);
+
+function init() {
   stage = STAGES.TASK1;
   typed = "";
   screenModal.classList.add('hidden');
 
-  renderKeyboard(currentLang);
+  renderKeyboard("base");
   initSlots();
   updateTexts();
   updateGhostWord();
@@ -51,20 +53,16 @@ function init(){
 
   okBtn.addEventListener('click', onOk);
   restartBtn.addEventListener('click', restartGame);
-  langBtn.addEventListener('click', toggleLang);
   screenRestart.addEventListener('click', restartGame);
-
   document.addEventListener('keydown', onKeydown);
 }
 
 /* === Тексты и кнопки === */
 function updateTexts() {
-  const t = TEXTS[currentLang];
+  const t = TEXTS.base;
 
-  // Заголовок подсказки
   document.querySelector('.hint-title').textContent = t.hintTitle;
 
-  // Текст задания с подстановкой слова кота
   const taskText = t[
     stage === STAGES.TASK1 ? 'task1' :
     stage === STAGES.TASK2 ? 'task2' :
@@ -74,47 +72,33 @@ function updateTexts() {
 
   hintBody.innerHTML = taskText;
 
-  // Этапы (1/3, 2/3 и т.д.)
   stepBadge.textContent =
     stage === STAGES.TASK1 ? '1 / 3' :
     stage === STAGES.TASK2 ? '2 / 3' :
     stage === STAGES.TASK3 ? '3 / 3' : '—';
 
-  // Кнопки
   okBtn.textContent = t.check;
   restartBtn.textContent = t.restart;
-  langBtn.textContent = t.lang;
   screenModal.querySelector('.screen-modal-title').textContent = t.finishTitle;
 
-  // Обновляем привязанные элементы
   updateGhostWord();
   updateScreenWord();
-}
-
-/* === Переключение языка только вручную === */
-function toggleLang(){
-  currentLang = currentLang === 'ru' ? 'en' : 'ru';
-  renderKeyboard(currentLang);
-  updateTexts();
-  updateGhostWord();
-  updateScreenWord();
-
-  // Визуальный отклик кнопки
-  langBtn.classList.add("pressed");
-  setTimeout(() => langBtn.classList.remove("pressed"), 150);
 }
 
 /* === Эффект клика === */
 function pop(){
   screenFx.classList.remove('pop');
-  void screenFx.offsetWidth;
+  void screenFx.offsetWidth; // перезапуск анимации
   screenFx.classList.add('pop');
 }
 
+
 /* === Кнопка Проверить === */
-function onOk(){
-  if(stage===STAGES.TASK1){
-    if(typed.length>0){
+function onOk() {
+  const t = TEXTS.base;
+
+  if (stage === STAGES.TASK1) {
+    if (typed.length > 0) {
       stage = STAGES.TASK2;
       typed = "";
       updateTexts();
@@ -123,12 +107,12 @@ function onOk(){
       launchFireworks();
     } else shakeHint();
   }
-  else if(stage===STAGES.TASK2){
+  else if (stage === STAGES.TASK2) {
     const w = typed.toUpperCase();
-    const correct = (w === TEXTS[currentLang].targetWord.toUpperCase());
-    if(correct){
+    const correct = (w === t.targetWord.toUpperCase());
+    if (correct) {
       stage = STAGES.TASK3;
-      typed="";
+      typed = "";
       updateTexts();
       ghostWord.innerHTML = "";
       updateScreenWord();
@@ -141,19 +125,19 @@ function onOk(){
       shakeHint();
     }
   }
-  else if(stage===STAGES.TASK3){
+  else if (stage === STAGES.TASK3) {
     finishIfDoneOrShowWindow();
   }
 }
 
 /* === Клавиатура === */
-function onKeydown(e){
-  if(stage===STAGES.END) return;
-  if(e.code==='Space') e.preventDefault();
+function onKeydown(e) {
+  if (stage === STAGES.END) return;
+  if (e.code === 'Space') e.preventDefault();
 
-  if(e.key==='Enter'){
+  if (e.key === 'Enter') {
     e.preventDefault();
-    if(!e.repeat) onOk();
+    if (!e.repeat) onOk();
     return;
   }
 
@@ -161,37 +145,34 @@ function onKeydown(e){
   const key = e.key.toUpperCase();
   pressVisual(key);
 
-  if(stage===STAGES.TASK1){
-    if(key.length===1){
+  if (stage === STAGES.TASK1) {
+    if (key.length === 1) {
       typed = key;
       updateScreenWord();
       pop();
     }
   }
-  else if(stage===STAGES.TASK2){
-    const ruLetters = /^[А-ЯЁ]$/;
-    const enLetters = /^[A-Z]$/;
+    else if (stage === STAGES.TASK2) {
+      if (e.key === 'Backspace') {
+        typed = typed.slice(0, -1);
+        updateGhostWord();
+        return;
+      }
 
-    if(e.key === 'Backspace'){
-      typed = typed.slice(0,-1);
-      updateGhostWord();
-      return;
+      const keyUpper = e.key.toUpperCase();
+      const enLetters = /^[A-Z]$/;
+
+      if (enLetters.test(keyUpper) && typed.length < 3) {
+        typed += keyUpper;
+        pop();
+        updateGhostWord();
+      } else if (keyUpper.length === 1 && !enLetters.test(keyUpper)) {
+        // неверная клавиша → звук ошибки
+        wrongSound();
+      }
     }
-
-    let allow = false;
-    if(currentLang === 'ru' && ruLetters.test(key)) allow = true;
-    if(currentLang === 'en' && enLetters.test(key)) allow = true;
-
-    if(allow && typed.length < 3){
-      typed += key;
-      pop();
-      updateGhostWord();
-    } else if (!allow && key.length===1) {
-      wrongSound();
-    }
-  }
-  else if(stage===STAGES.TASK3){
-    if(e.code === 'Space' && !e.repeat){
+  else if (stage === STAGES.TASK3) {
+    if (e.code === 'Space' && !e.repeat) {
       moveActiveCat();
       finishIfDoneOrShowWindow();
     }
@@ -204,7 +185,6 @@ function updateScreenWord() {
 
   if (stage === STAGES.TASK1) {
     const letter = typed.toUpperCase();
-    // буква + линия под ней
     screenText.innerHTML = letter ? `<span>${letter}</span>${cursor}` : cursor;
     screenText.style.opacity = 1;
   } else {
@@ -213,47 +193,43 @@ function updateScreenWord() {
   }
 }
 
-
 /* === Ошибка === */
-function wrongWordFlash(){
+function wrongWordFlash() {
   ghostWord.classList.add("wrong");
-  setTimeout(()=>ghostWord.classList.remove("wrong"), 800);
+  setTimeout(() => ghostWord.classList.remove("wrong"), 800);
 }
 
-
 /* === Финальное окно === */
-function finishIfDoneOrShowWindow(){
-  if(collected >= MAX_GOAL){
+function finishIfDoneOrShowWindow() {
+  const t = TEXTS.base;
+
+  if (collected >= MAX_GOAL) {
     stage = STAGES.END;
 
-    // показать финальный текст в подсказке
-    hintBody.innerHTML = TEXTS[currentLang].end;
+    hintBody.innerHTML = t.end;
     stepBadge.textContent = '✔';
 
     okBtn.classList.add('hidden');
     restartBtn.classList.remove('hidden');
 
-    // модалка
-    screenModal.querySelector('.screen-modal-title').textContent =
-      TEXTS[currentLang].finishTitle;
-    screenRestart.textContent = TEXTS[currentLang].restart; // ← текст кнопки в модалке
+    screenModal.querySelector('.screen-modal-title').textContent = t.finishTitle;
+    screenRestart.textContent = t.restart;
     screenModal.classList.remove('hidden');
 
-    updateTexts();       // синхронизация языков
-    launchFireworks();   // салют 🎉
+    updateTexts();
+    launchFireworks();
   }
 }
 
-
 /* === Подсказка трясётся === */
-function shakeHint(){
+function shakeHint() {
   hintCard.classList.remove('shake');
   void hintCard.offsetWidth;
   hintCard.classList.add('shake');
 }
 
 /* === Перезапуск === */
-function restartGame(){
+function restartGame() {
   ensureAudio();
   stage = STAGES.TASK1;
   typed = "";
@@ -264,7 +240,7 @@ function restartGame(){
   ghostWord.innerHTML = "";
 
   initSlots();
-  renderKeyboard(currentLang);
+  renderKeyboard("base");
   updateTexts();
   updateGhostWord();
   updateScreenWord();
@@ -295,7 +271,7 @@ function updateGhostWord() {
     return;
   }
 
-  const target = TEXTS[currentLang].targetWord.toUpperCase().split("");
+  const target = TEXTS.base.targetWord.toUpperCase().split("");
   const entered = typed.toUpperCase().split("");
 
   const out = target.map((letter, i) => {
@@ -309,7 +285,7 @@ function updateGhostWord() {
   ghostWord.innerHTML = out;
 }
 
-
+/* === Масштаб сцены === */
 window.addEventListener("resize", scaleScene);
 window.addEventListener("DOMContentLoaded", scaleScene);
 
